@@ -1,2 +1,2 @@
-from .arm_bone import ArmBone
+from .arm_param import ArmParam
 from .robotic_arm_config import RoboticArmConfig
