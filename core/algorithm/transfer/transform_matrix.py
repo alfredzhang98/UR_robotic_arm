@@ -36,9 +36,11 @@ Example:
     >>> arm_transform = TransformMatrix(position=[1, 2, 3], orientation=[30, 45, 60])
     >>> point_a = [4, 5, 6]  # Example point in coordinates A
     >>> point_b = arm_transform.transform_coordinates(point_a)
-    >>> print("Point in coordinates B:" + point_b)
+    >>> print(point_b)
+    [9.28633369 3.67086833 5.3547554 ]
     >>> point_a_recovered = arm_transform.inverse_transform_coordinates(point_b)
-    >>> print("Point recovered in coordinates A:")
+    >>> print(point_a_recovered)
+    [4. 5. 6.]
 """
 
 import numpy as np
