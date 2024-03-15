@@ -1,2 +1,2 @@
-from .arm_param import ArmParam
+from .arm_param import StableArmParam, DynamicArmParam
 from .robotic_arm_config import RoboticArmConfig

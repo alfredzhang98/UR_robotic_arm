@@ -1,13 +1,16 @@
 from dataclasses import dataclass
-from .arm_param import ArmParam
+from .arm_param import StableArmParam, DynamicArmParam
 
 
 @dataclass
 class RoboticArmConfig:
     """
-    :param armParam: The bone length of the robotic arm
+    :param armStableParam: The bone length of the robotic arm
+    :param armDynamicParam: The J param
     """
-    armParam: ArmParam
+    armStableParam: StableArmParam
+    armDynamicParam: DynamicArmParam
 
     def print_info(self) -> None:
-        print(self.armParam)
+        print(self.armStableParam)
+        print(self.armDynamicParam)
