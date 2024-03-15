@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time : 15/03/2024 20:31
 # @Author : Qingyu Zhang
+# @Email : qingyu.zhang.23@ucl.ac.uk
 # @Institution : UCL
 # @FileName: test.py
 # @Software: PyCharm
