@@ -48,8 +48,9 @@ import numpy as np
 
 class TransformMatrix:
     def __init__(self, position, orientation):
-        self._position = np.array(position)
-        self._orientation = np.array(orientation)
+        self.define_dtype = np.float64
+        self._position = np.array(position, dtype=self.define_dtype)
+        self._orientation = np.array(orientation, dtype=self.define_dtype)
 
     @property
     def position(self):
@@ -57,7 +58,7 @@ class TransformMatrix:
 
     @position.setter
     def position(self, new_position):
-        self._position = np.array(new_position)
+        self._position = np.array(new_position, dtype=self.define_dtype)
 
     @property
     def orientation(self):
@@ -65,7 +66,7 @@ class TransformMatrix:
 
     @orientation.setter
     def orientation(self, new_orientation):
-        self._orientation = np.array(new_orientation)
+        self._orientation = np.array(new_orientation, dtype=self.define_dtype)
 
     @classmethod
     def from_dict(cls, data):
@@ -108,10 +109,17 @@ class TransformMatrix:
         return point_b
 
     def inverse_transform_coordinates(self, point_b):
-        # Assuming point_b is a point in coordinates B
-        point_b_homogeneous = np.append(np.array(point_b), 1)  # Convert to homogeneous coordinates
         transform_matrix = self.get_transform_matrix()
-        inverse_transform_matrix = np.linalg.inv(transform_matrix)  # Compute the inverse of the transform matrix
-        point_a_homogeneous = inverse_transform_matrix @ point_b_homogeneous  # Transform the point back
-        point_a = point_a_homogeneous[:3]  # Convert back to 3D coordinates from homogeneous coordinates
+        # Checking determinants to avoid singular matrices
+        if np.linalg.det(transform_matrix) == 0:
+            raise ValueError("Transform matrix is singular, cannot compute its inverse.")
+        # Calculate the condition number to assess the numerical stability of the inverse matrix
+        cond_number = np.linalg.cond(transform_matrix)
+        if cond_number > 1e12:
+            raise Warning(f"Warning: The condition number of the transform matrix is high ({cond_number}), which may "
+                          f"lead to numerical instability in the inverse transformation.")
+        inverse_transform_matrix = np.linalg.inv(transform_matrix)
+        point_b_homogeneous = np.append(np.array(point_b, dtype=self.define_dtype), 1)
+        point_a_homogeneous = inverse_transform_matrix @ point_b_homogeneous
+        point_a = point_a_homogeneous[:3]
         return point_a
